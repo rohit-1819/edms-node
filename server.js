@@ -24,10 +24,11 @@ app.get('/api/ping', (req, res) => {
 
 app.post("/api/test", (req, res) => {
   console.log("✅ /api/test was hit");
+  console.log("JWT_SECRET:", process.env.JWT_SECRET);
   res.json({ message: "Test route reached" });
 });
 
-console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
 
 
 const PORT = process.env.PORT || 3000;
