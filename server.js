@@ -22,6 +22,10 @@ app.get('/api/ping', (req, res) => {
   res.json({ message: "pong" });
 });
 
+app.post("/api/test", (req, res) => {
+  console.log("✅ /api/test was hit");
+  res.json({ message: "Test route reached" });
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
