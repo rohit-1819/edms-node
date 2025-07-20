@@ -18,7 +18,7 @@ app.use('/api/posts', postRoutes);
 app.use('/api/employees', employeeRoutes);
 // app.use('/api/users', hodRoutes);
 
-app.get("/api/ping", (req, res) => {
+app.get('/api/ping', (req, res) => {
   res.json({ message: "pong" });
 });
 
