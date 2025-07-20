@@ -1,0 +1,34 @@
+curl -X POST http://localhost:3000/api/employees \
+-H "Content-Type: application/json" -d '{
+    "name": "John Doe",
+    "email": "John@edms.com",
+    "phone": "9330234822",
+    "department": "Health",
+    "created_by": 2
+}'
+
+curl -X POST http://localhost:3000/api/users \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "Doom Eternal",
+  "email": "doom@edms.com",
+  "password": "Mr.DOOM123",
+  "role": "HOD",
+  "department": "Health"
+}'
+
+curl -X POST http://localhost:3000/api/login \
+-H "Content-Type: application/json" \
+-d '{"email": "rohit@edms.com", "password": "rohit123"}'
+
+
+curl -X POST http://localhost:3000/api/users \
+-H "Authorization: Bearer YOUR_DM_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "New HOD",
+  "email": "newhod@edms.com",
+  "password": "password123",
+  "role": "HOD",
+  "department": "Finance"
+}'
