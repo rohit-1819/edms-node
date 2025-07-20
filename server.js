@@ -27,6 +27,9 @@ app.post("/api/test", (req, res) => {
   res.json({ message: "Test route reached" });
 });
 
+console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
