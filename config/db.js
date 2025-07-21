@@ -12,4 +12,13 @@ const pool = new Pool({
   }
 });
 
+pool.connect()
+  .then(client => {
+    console.log("✅ Connected to Supabase DB");
+    client.release();
+  })
+  .catch(err => {
+    console.error("❌ DB Connection Error:", err);
+  });
+
 module.exports = pool;
