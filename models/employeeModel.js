@@ -1,11 +1,11 @@
 const db = require('../config/db');
 
-const createEmployee = async ({ name, email, phone, department, created_by }) => {
+const createEmployee = async ({ name, email, phone, department, designation, created_by }) => {
     
     const result = await db.query(
-        `INSERT INTO employees (name, email, phone, department, created_by)
-        VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-        [name, email, phone, department, created_by]
+        `INSERT INTO employees (name, email, phone, department, designation, created_by)
+        VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+        [name, email, phone, department, designation, created_by]
     );
 
     return result.rows[0];

@@ -10,7 +10,7 @@ const createEmployee = async (req, res) => {
             return res.status(403).json({ error: "Unauthorized action" });
         }
 
-        const { name, email, phone } = req.body;
+        const { name, email, phone, designation } = req.body;
         const department = hod.department;
         const created_by = hod_id;
 
@@ -20,6 +20,7 @@ const createEmployee = async (req, res) => {
             email,
             phone,
             department,
+            designation,
             created_by
         });
         res.status(201).json(emp);
