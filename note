@@ -7,15 +7,6 @@ curl -X POST http://localhost:3000/api/employees \
     "created_by": 2
 }'
 
-curl -X POST http://localhost:3000/api/users \
--H "Content-Type: application/json" \
--d '{
-  "name": "Doom Eternal",
-  "email": "doom@edms.com",
-  "password": "Mr.DOOM123",
-  "role": "HOD",
-  "department": "Health"
-}'
 
 curl -X POST http://localhost:3000/api/login \
 -H "Content-Type: application/json" \

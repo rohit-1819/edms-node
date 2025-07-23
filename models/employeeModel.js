@@ -30,7 +30,7 @@ const updateEmployee = async (id, data) => {
 
 const setVerification = async (id, verified) => {
     const result = await db.query(
-        `UPDATE employees SET is_verified=$1 WHERE emp_id=$2 RETURNING *`,
+        `UPDATE employees SET verified=$1 WHERE emp_id=$2 RETURNING *`,
         [verified, id]
     );
     return result.rows[0];

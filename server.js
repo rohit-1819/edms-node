@@ -11,11 +11,13 @@ const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
 const postRoutes = require('./routes/postRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
+const assignmentRoutes = require('./routes/assignmentRoutes');
 
 app.use('/api/users', userRoutes);
 app.use('/api', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/employees', employeeRoutes);
+app.use('/api/duty', assignmentRoutes);
 // app.use('/api/users', hodRoutes);
 
 app.get('/api/ping', (req, res) => {
