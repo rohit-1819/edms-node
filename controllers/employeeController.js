@@ -55,7 +55,7 @@ const editEmployee = async (req, res) => {
 
 const verifyEmployee  = async (req, res) => {
     try {
-        const updated = await employeeModel.setVerification(req.params.emp_id, true);
+        const updated = await employeeModel.setVerification(req.params.emp_id, TRUE);
         res.json(updated);
     }
     catch (err) {
@@ -66,7 +66,7 @@ const verifyEmployee  = async (req, res) => {
 
 const unverifyEmployee = async (req, res) => {
     try {
-        const updated = await employeeModel.setVerification(req.params.emp_id, false);
+        const updated = await employeeModel.setVerification(req.params.emp_id, FALSE);
         res.json(updated);
     }
     catch (err) {
