@@ -1,6 +1,6 @@
 const { getPollingStations, getEligibleEmployees, assignDuties } = require("../models/assignmentModel");
 
-exports.initiateDutyCycle = async (req, res) => {
+const initiateDutyCycle = async (req, res) => {
   try {
     const { district, area, designationRequirements } = req.body;
 
@@ -37,3 +37,5 @@ exports.initiateDutyCycle = async (req, res) => {
     res.status(500).json({ error: "Failed to assign duties" });
   }
 };
+
+module.exports = { initiateDutyCycle };
