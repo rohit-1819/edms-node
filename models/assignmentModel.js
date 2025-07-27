@@ -10,7 +10,7 @@ exports.getEligibleEmployees = async (department, designation) => {
   const query = `
     SELECT * FROM employees
     WHERE department = $1 AND designation = $2 AND verified = TRUE AND emp_id NOT IN (
-      SELECT employee_id FROM assignments
+      SELECT emp_id FROM assignments
     )
   `;
   const { rows } = await pool.query(query, [department, designation]);

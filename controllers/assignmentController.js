@@ -1,6 +1,7 @@
 const { getPollingStations, getEligibleEmployees, assignDuties } = require("../models/assignmentModel");
 
 const initiateDutyCycle = async (req, res) => {
+  console.log("Incoming duty assignment request:", req.body);
   try {
     const { district, area, designationRequirements } = req.body;
 
@@ -20,7 +21,7 @@ const initiateDutyCycle = async (req, res) => {
           const selected = eligible[Math.floor(Math.random() * eligible.length)];
 
           allAssignments.push({
-            polling_station_id: station.id,
+            polling_station_id: station.station_id,
             employee_id: selected.emp_id,
             designation: desig
           });
