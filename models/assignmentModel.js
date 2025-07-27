@@ -23,7 +23,7 @@ exports.assignDuties = async (assignments) => {
     await client.query("BEGIN");
     for (const a of assignments) {
       await client.query(
-        `INSERT INTO assignments (station_id, employee_id)
+        `INSERT INTO assignments (station_id, emp_id)
          VALUES ($1, $2)`,
         [a.station_id, a.employee_id]
       );
