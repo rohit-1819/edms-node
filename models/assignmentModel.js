@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require('../config/db');
 
 const getPollingStations = async (district, area) => {
   const query = `SELECT station_id FROM polling_stations WHERE district = $1 AND area = $2`;
@@ -20,7 +20,7 @@ const getEligibleEmployees = async (department, designation) => {
 const assignDuties = async () => {
   const assigned = [];
 
-  const { rows: requirements } = await db.query("SELECT * FROM duty_requirements");
+  const { rows: requirements } = await db.query(`SELECT * FROM duty_requirements`);
 
   for (const req of requirements) {
     const { station_id, department, designation, required_count } = req;
@@ -43,7 +43,7 @@ const assignDuties = async () => {
 
     for (const candidate of candidates) {
       await db.query(
-        "INSERT INTO assignments (emp_id, station_id) VALUES ($1, $2)",
+        `INSERT INTO assignments (emp_id, station_id) VALUES ($1, $2)`,
         [candidate.emp_id, station_id]
       );
       assigned.push({ emp_id: candidate.emp_id, station_id });
