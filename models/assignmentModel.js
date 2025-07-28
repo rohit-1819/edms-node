@@ -1,12 +1,12 @@
-const pool = require("../config/db");
+const db = require("../config/db");
 
-exports.getPollingStations = async (district, area) => {
+const getPollingStations = async (district, area) => {
   const query = `SELECT station_id FROM polling_stations WHERE district = $1 AND area = $2`;
   const { rows } = await pool.query(query, [district, area]);
   return rows;
 };
 
-exports.getEligibleEmployees = async (department, designation) => {
+const getEligibleEmployees = async (department, designation) => {
   const query = `
     SELECT * FROM employees
     WHERE department = $1 AND designation = $2 AND verified = TRUE AND emp_id NOT IN (
@@ -17,22 +17,43 @@ exports.getEligibleEmployees = async (department, designation) => {
   return rows;
 };
 
-exports.assignDuties = async (assignments) => {
-  const client = await pool.connect();
-  try {
-    await client.query("BEGIN");
-    for (const a of assignments) {
-      await client.query(
-        `INSERT INTO assignments (station_id, emp_id)
-         VALUES ($1, $2)`,
-        [a.station_id, a.employee_id]
-      );
+const assignDuties = async () => {
+  const assigned = [];
+
+  const { rows: requirements } = await db.query("SELECT * FROM duty_requirements");
+
+  for (const req of requirements) {
+    const { station_id, department, designation, required_count } = req;
+    
+    const { rows: candidates } = await db.query(
+      `SELECT e.emp_id FROM employees e
+      LEFT JOIN assignments a ON e.emp_id = a.emp_id
+      WHERE a.emp_id IS NULL
+      AND e.department = $1
+      AND e.designation = $2
+      AND e.verified = TRUE
+      LIMIT $3`,
+      [department, designation, required_count]
+    );
+
+    if (candidates.length < required_count) {
+      console.warn(`Not enough candidates for ${designation} in ${department} at polling station ${station_id}`);
+      continue;
     }
-    await client.query("COMMIT");
-  } catch (err) {
-    await client.query("ROLLBACK");
-    throw err;
-  } finally {
-    client.release();
+
+    for (const candidate of candidates) {
+      await db.query(
+        "INSERT INTO assignments (emp_id, station_id) VALUES ($1, $2)",
+        [candidate.emp_id, station_id]
+      );
+      assigned.push({ emp_id: candidate.emp_id, station_id });
+    }
   }
+  return assigned;
+};
+
+module.exports = {
+  assignDuties,
+  getPollingStations,
+  getEligibleEmployees
 };

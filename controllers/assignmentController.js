@@ -1,40 +1,16 @@
-const { getPollingStations, getEligibleEmployees, assignDuties } = require("../models/assignmentModel");
+const { assignDuties } = require("../models/assignmentModel");
 
 const initiateDutyCycle = async (req, res) => {
-  console.log("Incoming duty assignment request:", req.body);
   try {
-    const { district, area, designationRequirements } = req.body;
+    const assignments = await assignDuties();
 
-    // Step 1: Fetch polling stations
-    const pollingStations = await getPollingStations(district, area);
-
-    // Step 2: Get eligible employees for each designation
-    const allAssignments = [];
-    for (const station of pollingStations) {
-      for (const dept in designationRequirements) {
-        const required = designationRequirements[dept];
-
-        for (const desig of required) {
-          const eligible = await getEligibleEmployees(dept, desig);
-          if (!eligible.length) continue;
-
-          const selected = eligible[Math.floor(Math.random() * eligible.length)];
-
-          allAssignments.push({
-            polling_station_id: station.station_id,
-            employee_id: selected.emp_id,
-            designation: desig
-          });
-        }
-      }
+    if (assignments.length === 0) {
+      return res.status(200).json({ message: "No duties assigned (possibly due to shortage of verified candidates)." });
     }
 
-    // Step 3: Save assignments
-    await assignDuties(allAssignments);
-
-    res.status(201).json({ message: "Duties assigned successfully", assignments: allAssignments });
+    res.status(200).json({ message: "Duties assigned successfully", assignments });
   } catch (error) {
-    console.error("Duty assignment error:", error);
+    console.error("Error assigning duties:", error);
     res.status(500).json({ error: "Failed to assign duties" });
   }
 };
