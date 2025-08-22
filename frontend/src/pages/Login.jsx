@@ -1,5 +1,4 @@
 import { useState } from "react";
-import API from "../api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -9,12 +8,33 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await API.post("/login", { email, password });
-      localStorage.setItem("token", res.data.token);
-      alert("Login successful ✅");
-      // Redirect or load dashboard
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) throw new Error("Login failed");
+
+      const data = await res.json();
+      const token = data.token;
+
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const role = payload.role;
+
+      if (role === "DM") {
+        localStorage.setItem("DM_TOKEN", token);
+      } else if (role === "HOD")  {
+        localStorage.setItem("HOD_TOKEN", token);
+      }
+
+      if (role === "DM") {
+        navigate("/dm-dashboard");
+      } else if (role === "HOD") {
+        navigate("/hod-dashboard");
+      }
     } catch (err) {
-      setError("Invalid login credentials ❌");
+      setError("Login Error: ", err);
     }
   };
 
