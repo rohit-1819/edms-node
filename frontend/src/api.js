@@ -1,7 +1,7 @@
 import axios from "axios";
-
+console.log("BASE URL:", import.meta.env.VITE_API_BASE_URL);
 const API = axios.create({
-  baseURL: "https://edms-node.onrender.com/api", // your Render backend URL
+  baseURL: import.meta.env.VITE_API_BASE_URL, // your Render backend URL
 });
 
 // Add auth token automatically if available
