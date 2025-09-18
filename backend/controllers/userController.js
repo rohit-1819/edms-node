@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { getUserByEmail, createHOD} = require('../models/userModel');
+const { getUserByEmail, createHOD, getAllHODs } = require('../models/userModel');
 
 const fetchUser = async (req, res) => {
   try {
@@ -9,6 +9,21 @@ const fetchUser = async (req, res) => {
     res.json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+const fetchHODs = async (req, res) => {
+  try {
+    // Only DM should be able to fetch HODs
+    if (req.user.role !== 'DM') {
+      return res.status(403).json({ error: 'Only DM can view all HODs.' });
+    }
+
+    const hods = await getAllHODs();
+    res.json(hods);
+  } catch (err) {
+    console.error("Error fetching HODs:", err);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -44,4 +59,4 @@ const createUser = async (req, res) => {
 };
 
 
-module.exports = { fetchUser, createUser };
+module.exports = { fetchUser, createUser, fetchHODs };

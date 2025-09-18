@@ -10,6 +10,11 @@ const getUserByID = async (user_id) => {
   return res.rows[0];
 };
 
+const getAllHODs = async () => {
+  const result = await db.query("SELECT user_id, name, email, department FROM users WHERE role = 'HOD'");
+  return result.rows;
+}
+
 const createHOD = async (hodData) => {
   const { name, email, hashedPassword, department } = hodData;
 
@@ -25,5 +30,6 @@ const createHOD = async (hodData) => {
 module.exports = { 
   getUserByEmail,
   getUserByID,
-  createHOD
+  createHOD,
+  getAllHODs
 };

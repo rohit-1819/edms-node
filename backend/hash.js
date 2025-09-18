@@ -1,7 +1,7 @@
 // hash.js
 const bcrypt = require('bcrypt');
 
-const password = 'gehrmann123';
+const password = 'rohit123';
 
 bcrypt.hash(password, 10, (err, hash) => {
   if (err) {
@@ -10,3 +10,5 @@ bcrypt.hash(password, 10, (err, hash) => {
     console.log('Hashed password:\n', hash);
   }
 });
+// gehrmann@edms.com
+// gehrmann123
